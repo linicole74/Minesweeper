@@ -1,2 +1,3 @@
 # Minesweeper
-minesweeper group project
+
+Minesweeper group project that uses Swing.
