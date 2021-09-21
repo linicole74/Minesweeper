@@ -41,7 +41,6 @@ public class MineField implements IMinesweeper {
 	private boolean canStartGeneration;		// whether mines are to be generated at the moment
 	private JButton numMinesDisplay;		// button that displays the number of mines
 	
-	// <Annika Le>
 	// Asks the user for the number of squares horizontally and vertically
 	public void getDimensions() {
 		this.gameState = "start";
