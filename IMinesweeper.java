@@ -7,7 +7,6 @@
 
 package li.five;
 
-// <Abby Levit>
 public interface IMinesweeper {
 	
 	public abstract void getDimensions();
@@ -27,4 +26,3 @@ public interface IMinesweeper {
 	public abstract void setSelectedPlayerFieldSquareToMineField(int yCoord, int xCoord);
 	public abstract void setSelectedPlayerFieldSquareToMineFieldSimplified(int yCoord, int xCoord);
 }
-// </Abby Levit>
