@@ -7,12 +7,10 @@
 
 package li.five;
 
-// <Nicole Li and Emily Zhao>
 public class Main {
               
     public static void main(String[] args) {
     	
-    	// <Nicole Li>
     	// Creates a MineField to play on.
     	MineField mines = new MineField();
     	
@@ -44,9 +42,7 @@ public class Main {
         	
         	// Starts the GUI's actions after the first click and generation have been completed.
         	mines.guiStart();
-        	// </Nicole Li>
-        	
-        	// <Emily Zhao>
+        
         	// Waits until the player wins or loses the game.
         	while (mines.getGameState() == "start") {
         		try {
@@ -62,8 +58,6 @@ public class Main {
         		}
         		catch(InterruptedException e) {}
         	}
-        	// </Emily Zhao>
     	}
     }
 }
-// </Nicole Li and Emily Zhao>
