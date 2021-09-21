@@ -82,9 +82,7 @@ public class MineField implements IMinesweeper {
 			}
 		}
 	}
-	// </Annika Le>
 	
-	// <Emily Zhao>
 	// Makes all of the mines visible to the player.
 	// Used when player loses.
 	public void showMines() {
@@ -96,9 +94,7 @@ public class MineField implements IMinesweeper {
 			}
 		}
 	}
-	// </Emily Zhao>
 	
-	// <Vani Arora>
 	// Checks if the player has won.
 	public boolean checkWin() {
 		int countSquares = 0;
@@ -117,13 +113,10 @@ public class MineField implements IMinesweeper {
 		}
 		else return false;
 	}
-	// </Vani Arora>
 	
-	// <Nicole Li and Emily Zhao>
 	// Creates the minefield but does not generate numbers.
 	public void setup() {
 		
-		// <Nicole Li>
 		// Creates an unclicked playerField (unclicked meaning -1 for all values).
 		this.playerField = new int[this.y][this.x];
 		for (int i = 0; i < this.y; i++) {
@@ -131,9 +124,7 @@ public class MineField implements IMinesweeper {
 				this.playerField[i][j] = -1;
 			}
 		}
-		// </Nicole Li>
 		
-		// <Emily Zhao>
 		// Creates the window.
 		this.window = new JFrame();
 		this.window.pack();
@@ -151,22 +142,16 @@ public class MineField implements IMinesweeper {
 		else {
 			this.squareSide = possibleSide2;
 		}
-		// </Emily Zhao>
 		
-		// <Nicole Li>
 		// Creates empty squares for the grid.
 		this.buttons = new JButton[this.x * this.y];
 		this.canStartGeneration = false;
-		// </Nicole Li>
 		
-		// <Annika Le>
 		// Creates a button to display the number of mines.
 		this.numMinesDisplay = new JButton("Mines: ");
 		this.numMinesDisplay.setBounds(0, 0, this.squareSide * this.x, 100);
 		window.add(this.numMinesDisplay);
-		// </Annika Le>
 		
-		// <Nicole Li>
 		// Creates the squares.
 		for (int i = 0; i < this.y; i++) {
 			for (int j = 0; j < this.x; j++) {
@@ -197,15 +182,11 @@ public class MineField implements IMinesweeper {
                   
 		// Makes the window closable.
 		this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// </Nicole Li>
 	}
-	// </Nicole Li and Emily Zhao>
 	
-	// <Nicole Li and Vani Arora>
 	// Starts the game after the first click.
 	public void guiStart() {
 		
-		// <Nicole Li>
 		// Allows the effect of the first click to take place.
 		setSelectedPlayerFieldSquareToMineField();
 		
@@ -224,9 +205,7 @@ public class MineField implements IMinesweeper {
 		// Creates the squares' reactions to player clicks.
 		for (int i = 0; i < this.y; i++) {
 			for (int j = 0; j < this.x; j++) {
-				// </Nicole Li>
 				
-				// <Vani Arora>
 				// Listens for a right mouse click to flag a square.
 				this.buttons[i * this.x + j].addMouseListener(new MouseAdapter(){
 					public void mousePressed(MouseEvent e) {
@@ -236,9 +215,7 @@ public class MineField implements IMinesweeper {
 	                    }
 	                }
 				});
-				// </Vani Arora>
-
-				// <Nicole Li>
+				
 		        // Listens for a left mouse click to reveal a square.
 		        this.buttons[i * this.x + j].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) { 
@@ -247,9 +224,7 @@ public class MineField implements IMinesweeper {
 							// Sets selectedX and selectedY to the square the player selected.
 							selectedX = ((Component) e.getSource()).getLocation().x / squareSide;
 			            	selectedY = (((Component) e.getSource()).getLocation().y - 100) / squareSide;
-			            	// </Nicole Li>
-			            	
-			            	// <Vani Arora>
+
 			            	// Determines if win or lose conditions have been met.
 			            	if (mineField[selectedY][selectedX] == 9) {
 				            	numMinesDisplay.setText("You lost. Click here to play again.");
@@ -260,7 +235,6 @@ public class MineField implements IMinesweeper {
 				            	numMinesDisplay.setText("You won. Click here to play again.");
 				            	gameState = "win";
 			            	}
-			            	// </Vani Arora>
 			            	
 			            	// Reveals the value of the square clicked.
 			            	setSelectedPlayerFieldSquareToMineField();
@@ -270,9 +244,7 @@ public class MineField implements IMinesweeper {
 			}
 		}
 	}
-	// </Nicole Li and Vani Arora>
 	
-	// <Emily Zhao>
 	// Reveals groups of squares of zero and their bordering numbers touching the selected square.
 	public void revealZeros(int yCoord, int xCoord) {
 		
@@ -349,13 +321,10 @@ public class MineField implements IMinesweeper {
 			}
 		}
 	}
-	// </Emily Zhao>
 	
-	// <Nicole Li and Emily Zhao>
 	// Creates the "answer key".
 	public void generate() {
 		
-		// <Nicole Li>
 		// Generates a number of mines following a modified formula.
 		this.numMines = 1 + ThreadLocalRandom.current().nextInt((this.x - 1) * (this.y - 1) / 8, (this.x - 1) * (this.y - 1) / 5);
 		
@@ -386,11 +355,9 @@ public class MineField implements IMinesweeper {
 		for (int i = 0; i < this.numMines; i++) {
 			this.mineField[mineLocations[i] / this.x][mineLocations[i] % this.x] = 9;
 		}
-		// </Nicole Li>
 		
 		// Counts the number of mines touching each square.
 		// Places the values into mineField.
-		// <Emily Zhao>
 		for (int i = 0; i < this.y; i++) {
 			for (int j = 0; j < this.x; j++) {
 				if (this.mineField[i][j] != 9) {
@@ -445,18 +412,13 @@ public class MineField implements IMinesweeper {
 				}
 			}
 		}
-		// </Emily Zhao>
 	}
-	// </Nicole Li and Emily Zhao>
 	
-	// <Nicole Li>
 	// Returns the player's selected square's value.
 	public int getSelectedMineFieldSquare() {
 		return this.mineField[this.selectedY][this.selectedX];
 	}
-	// </Nicole Li>
 	
-	// <Annika Le>
 	// Returns whether "answer key" generation can begin.
 	public boolean getCanStartGeneration() {
 		return this.canStartGeneration;
@@ -481,9 +443,7 @@ public class MineField implements IMinesweeper {
 	public void setGameState(String gameState) {
 		this.gameState = gameState;
 	}
-	// </Annika Le>
 
-	// <Emily Zhao>
 	// Sets a selected square in playerField to the "answer key"'s corresponding square.
 	public void setSelectedPlayerFieldSquareToMineField(int yCoord, int xCoord) {
 		this.playerField[yCoord][xCoord] = this.mineField[yCoord][xCoord];
@@ -495,20 +455,15 @@ public class MineField implements IMinesweeper {
 		}
 		else this.buttons[yCoord * this.x + xCoord].setText(Integer.toString(this.playerField[yCoord][xCoord]));
 	}
-	// </Emily Zhao>
 	
-	// <Vani Arora>
 	// Sets the player's selected square in playerField to the "answer key"'s corresponding square.
 	public void setSelectedPlayerFieldSquareToMineField() {
 		setSelectedPlayerFieldSquareToMineField(this.selectedY, this.selectedX);
 	}
-	// </Vani Arora>
 	
-	// <Nicole Li>
 	// Sets the player's selected square in playerField to the "answer key"'s corresponding square without the extra features.
 	public void setSelectedPlayerFieldSquareToMineFieldSimplified(int yCoord, int xCoord) {
 		this.playerField[yCoord][xCoord] = this.mineField[yCoord][xCoord];
 		this.buttons[yCoord * this.x + xCoord].setText(Integer.toString(this.mineField[yCoord][xCoord]));
 	}
-	// </Nicole Li>
 }
