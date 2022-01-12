@@ -1,12 +1,4 @@
-/*
- * Nicole Li, Emily Zhao, Vani Arora, Annika Le, Abby Levit
- * October 8, 2019
- * AP CSA Freebuild
- * MineField
- */
-
-package li.five;
-
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
@@ -49,7 +41,7 @@ public class MineField implements IMinesweeper {
 		this.x = -1;
 		while (x == -1) {
 			try {
-				System.out.print("width ");
+				System.out.print("Enter width ");
 				// Gets user input.
 				BufferedReader inputWidth = new BufferedReader(new InputStreamReader(System.in));
 				int width = Integer.parseInt(inputWidth.readLine());
@@ -67,7 +59,7 @@ public class MineField implements IMinesweeper {
 		this.y = -1;
 		while (y == -1) {
 			try {
-				System.out.print("height ");
+				System.out.print("Enter height ");
 				// Gets user input.
 				BufferedReader inputWidth = new BufferedReader(new InputStreamReader(System.in));
 				int height = Integer.parseInt(inputWidth.readLine());
@@ -157,6 +149,7 @@ public class MineField implements IMinesweeper {
 				this.buttons[i * this.x + j] = new JButton();
 				this.buttons[i * this.x + j].setBounds(j * this.squareSide, i * this.squareSide + 100, this.squareSide, this.squareSide);
 				this.buttons[i * this.x + j].setMargin(new Insets(0, 0, 0, 0));
+				this.buttons[i * this.x + j].setBackground(new Color(240,248,255));
 		        window.add(this.buttons[i * this.x + j]);
 		        
 		        // Listens for the first click of a square when the window loads.
@@ -211,6 +204,7 @@ public class MineField implements IMinesweeper {
 						if (SwingUtilities.isRightMouseButton(e)) {
 							// Flags a square by changing it to "F".
 							((JButton) e.getSource()).setText("F");
+							((JButton) e.getSource()).setBackground(Color.LIGHT_GRAY);
 	                    }
 	                }
 				});
@@ -247,77 +241,64 @@ public class MineField implements IMinesweeper {
 	// Reveals groups of squares of zero and their bordering numbers touching the selected square.
 	public void revealZeros(int yCoord, int xCoord) {
 		
-		// Reveals the currently selected square.
-		setSelectedPlayerFieldSquareToMineFieldSimplified(yCoord, xCoord);
-		
-		// Reveals the group of squares.
-		if (this.mineField[this.selectedY][this.selectedX] == 0) {
-			for (int i = this.selectedY - 1; i < this.selectedY + 1; i++) {
-				
-				// Tests bordering squares of the selected square and bordering squares of bordering squares.
-				for (int j = this.selectedX - 1; j < this.selectedX + 1; j++) {
-					try {
-						if (this.mineField[i - 1][j] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i - 1, j);
-							this.selectedY--;
-						}
-					}
-					catch (Exception e) {}
-					try { 
-						if (this.mineField[i - 1][j - 1] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i - 1, j - 1);
-							this.selectedY--;
-							this.selectedX--;
-						}
-					}
-					catch (Exception e) {}
-					try {
-						if (this.mineField[i - 1][j + 1] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i - 1, j + 1);
-							this.selectedY--;
-							this.selectedX++;
-						}
-					}
-					catch (Exception e) {}
-					try { 
-						if (this.mineField[i][j - 1] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i, j - 1);
-							this.selectedX--;
-						}
-					}
-					catch (Exception e) {}
-					try { 
-						if (this.mineField[i][j + 1] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i, j + 1);
-							this.selectedX++;
-						}
-					}
-					catch (Exception e) {}
-					try {
-						if (this.mineField[i + 1][j - 1] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i + 1, j - 1);
-							this.selectedY++;
-							this.selectedX--;
-						}
-					}
-					catch (Exception e) {}
-					try { 
-						if (this.mineField[i + 1][j] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i + 1, j);
-							this.selectedY++;
-						}
-					}
-					catch (Exception e) {}
-					try { 
-						if (this.mineField[i + 1][j + 1] != 9) {
-							setSelectedPlayerFieldSquareToMineFieldSimplified(i + 1, j + 1);
-							this.selectedY++;
-							this.selectedX++;
-						}
-					}
-					catch (Exception e) {}				
+		// Tries revealing bordering squares if current square is zero.
+		if (this.mineField[yCoord][xCoord] == 0 && this.playerField[yCoord][xCoord] == -1) {
+			
+			// Reveals the current square.
+			setSelectedPlayerFieldSquareToMineFieldSimplified(yCoord, xCoord);
+			
+			// Tries revealing the squares next to the current square.
+			try {
+				if (this.mineField[yCoord - 1][xCoord] != 9) {
+					revealZeros(yCoord - 1, xCoord);
 				}
 			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord + 1][xCoord] != 9) {
+					revealZeros(yCoord + 1, xCoord);
+				}
+			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord][xCoord - 1] != 9) {
+					revealZeros(yCoord, xCoord - 1);
+				}
+			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord][xCoord + 1] != 9) {
+					revealZeros(yCoord, xCoord + 1);
+				}
+			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord - 1][xCoord - 1] != 9) {
+					revealZeros(yCoord - 1, xCoord - 1);
+				}
+			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord + 1][xCoord + 1] != 9) {
+					revealZeros(yCoord + 1, xCoord + 1);
+				}
+			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord + 1][xCoord - 1] != 9) {
+					revealZeros(yCoord + 1, xCoord - 1);
+				}
+			}
+			catch (Exception e) {}
+			try {
+				if (this.mineField[yCoord - 1][xCoord + 1] != 9) {
+					revealZeros(yCoord - 1, xCoord + 1);
+				}
+			}
+			catch (Exception e) {}
+		}
+		else if (this.playerField[yCoord][xCoord] == -1) {
+			setSelectedPlayerFieldSquareToMineFieldSimplified(yCoord, xCoord);
 		}
 	}
 	
@@ -445,14 +426,18 @@ public class MineField implements IMinesweeper {
 
 	// Sets a selected square in playerField to the "answer key"'s corresponding square.
 	public void setSelectedPlayerFieldSquareToMineField(int yCoord, int xCoord) {
-		this.playerField[yCoord][xCoord] = this.mineField[yCoord][xCoord];
-		if (this.playerField[yCoord][xCoord] == 9) {
+		if (this.mineField[yCoord][xCoord] == 9) {
+			this.playerField[yCoord][xCoord] = this.mineField[yCoord][xCoord];
 			this.buttons[yCoord * this.x + xCoord].setText("BOOM");
+			this.buttons[yCoord * this.x + xCoord].setBackground(new Color(139,0,0));
 		}
-		else if (this.playerField[yCoord][xCoord] == 0) {
+		else if (this.mineField[yCoord][xCoord] == 0) {
 			revealZeros(yCoord, xCoord);
 		}
-		else this.buttons[yCoord * this.x + xCoord].setText(Integer.toString(this.playerField[yCoord][xCoord]));
+		else {
+			this.playerField[yCoord][xCoord] = this.mineField[yCoord][xCoord];
+			this.buttons[yCoord * this.x + xCoord].setText(Integer.toString(this.playerField[yCoord][xCoord]));
+		}
 	}
 	
 	// Sets the player's selected square in playerField to the "answer key"'s corresponding square.
